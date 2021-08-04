@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './style.css';
+import axios from "axios";
+import { useState } from "react";
+import { Todo } from './Todo';
 
-function App() {
+export default function App() {
+  const [todos, setTodos] = useState<any>([]);
+  const onClickFetchData = () => {
+    axios.get("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => {
+      setTodos(res.data);
+    });
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={onClickFetchData}>データ取得</button>
+      {todos.map((todo) => (
+        <Todo title={todo.title} userid={todo.userid} />
+      ))}
     </div>
   );
 }
-
-export default App;
